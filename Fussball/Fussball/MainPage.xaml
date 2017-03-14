@@ -4,8 +4,42 @@
              xmlns:local="clr-namespace:Fussball"
              x:Class="Fussball.MainPage">
 
-	<Label Text="Welcome to Xamarin Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+	<Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="200"/>
+			<RowDefinition Height="40" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Label Grid.Row="0" Grid.ColumnSpan="2" Text="Tu bedzie timer, ale go na razie nie ma i co mi zrobicie" HorizontalOptions="Center" TextColor="#7A6F76" FontSize="Small"/>
+
+		<BoxView Grid.Row="1" Grid.Column="0" BackgroundColor="#448C6F" />
+		<Label Text="{Binding TeamOneScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0" BackgroundColor="#448C6F" TextColor="White" FontSize="128">
+			<Label.GestureRecognizers>
+				<TapGestureRecognizer Command="{Binding GoalTeamOneTapCommand}" />
+			</Label.GestureRecognizers>
+		</Label>
+
+		<BoxView x:Name="Box1"  Grid.Row="1" Grid.Column="1" BackgroundColor="#448C6F" />
+		<Label Text="{Binding TeamTwoScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="1" BackgroundColor="#448C6F" TextColor="White" FontSize="128" VerticalOptions="Fill">
+			<Label.GestureRecognizers>
+				<TapGestureRecognizer Command="{Binding GoalTeamTwoTapCommand}" />
+			</Label.GestureRecognizers>
+		</Label>
+
+		<Button StyleClass="Link" Clicked="ResetScore" Text="Reset score" Grid.Row="2"/>
+
+		<Entry Placeholder="Player 1" Grid.Row="3" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+		<Entry Placeholder="Player 2" Grid.Row="4" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+		<Entry Placeholder="Player 1" Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+		<Entry Placeholder="Player 2" Grid.Row="4" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+	</Grid>
 
 </ContentPage>
