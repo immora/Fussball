@@ -17,11 +17,13 @@ namespace Fussball.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
-			base.OnCreate(bundle);
+      this.Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
+
+      base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
-			LoadApplication(new App());
-		}
+      LoadApplication(new App());
+ 		}
 	}
 }
 
