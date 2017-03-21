@@ -6,8 +6,8 @@
 
 	<Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="40"/>
-			<RowDefinition Height="200"/>
+			<RowDefinition Height="128"/>
+			<RowDefinition Height="140"/>
 			<RowDefinition Height="40" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
@@ -17,23 +17,24 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<Label Grid.Row="0" Grid.ColumnSpan="2" Text="Tu bedzie timer, ale go na razie nie ma i co mi zrobicie" HorizontalOptions="Center" TextColor="#7A6F76" FontSize="Small"/>
+		<Label x:Name="timeLeftLabel" Text="{Binding TimeLeft}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center" TextColor="#7A6F76" FontSize="96"/>
 
 		<BoxView Grid.Row="1" Grid.Column="0" BackgroundColor="#448C6F" />
-		<Label Text="{Binding TeamOneScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0" BackgroundColor="#448C6F" TextColor="White" FontSize="128">
+		<Label Text="{Binding TeamOneScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0" BackgroundColor="#448C6F" TextColor="White" FontSize="100">
 			<Label.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding GoalTeamOneTapCommand}" />
 			</Label.GestureRecognizers>
 		</Label>
 
 		<BoxView x:Name="Box1"  Grid.Row="1" Grid.Column="1" BackgroundColor="#448C6F" />
-		<Label Text="{Binding TeamTwoScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="1" BackgroundColor="#448C6F" TextColor="White" FontSize="128" VerticalOptions="Fill">
+		<Label Text="{Binding TeamTwoScore}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="1" BackgroundColor="#448C6F" TextColor="White" FontSize="100" VerticalOptions="Fill">
 			<Label.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding GoalTeamTwoTapCommand}" />
 			</Label.GestureRecognizers>
 		</Label>
 
-		<Button StyleClass="Link" Clicked="ResetScore" Text="Reset score" Grid.Row="2"/>
+		<Button StyleClass="Link" Clicked="ResetScore" Text="Reset score" Grid.Row="2" Grid.Column="0"/>
+		<Button StyleClass="Link" Command="{Binding StartTimerCommand}" Text="StartTimer" Grid.Row="2" Grid.Column="1"/>
 
 		<Entry Placeholder="Player 1" Grid.Row="3" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>
 		<Entry Placeholder="Player 2" Grid.Row="4" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>

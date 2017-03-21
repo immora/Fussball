@@ -6,82 +6,131 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.Notifications;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Fussball
 {
-	public partial class MainPage : ContentPage
-	{
-		public MainPage()
-		{
-			InitializeComponent();
-			BindingContext = new MainPageViewModel();
-		}
+  [XamlCompilation(XamlCompilationOptions.Compile)]
+  public partial class MainPage : ContentPage
+  {
+    public MainPage()
+    {
+      InitializeComponent();
+      BindingContext = new MainPageViewModel();
+    }
 
-		private void ResetScore(object sender, EventArgs e)
-		{
-			BindingContext = new MainPageViewModel();
-		}
+    private void ResetScore(object sender, EventArgs e)
+    {
+      BindingContext = new MainPageViewModel();
+    }
 
-		class MainPageViewModel : INotifyPropertyChanged
-		{
-			public ICommand IncreaseGoalCountCommand { get; }
-			public ICommand GoalTeamOneTapCommand { get; }
-			public ICommand GoalTeamTwoTapCommand { get; }
+    public class MainPageViewModel : INotifyPropertyChanged
+    {
+      public ICommand IncreaseGoalCountCommand { get; }
+      public ICommand GoalTeamOneTapCommand { get; }
+      public ICommand GoalTeamTwoTapCommand { get; }
+      public ICommand StartTimerCommand { get; set; }
 
-			int teamOneScore;
-			public int TeamOneScore
-			{
-				get { return teamOneScore; }
-				set { teamOneScore = value; OnPropertyChanged(); }
-			}
+      string timeLeft;
+      public string TimeLeft
+      {
+        get { return timeLeft; }
+        set { timeLeft = value; OnPropertyChanged(); }
+      }
 
-			int teamTwoScore;
-			public int TeamTwoScore
-			{
-				get { return teamTwoScore; }
-				set { teamTwoScore = value; OnPropertyChanged(); }
-			}
+      int teamOneScore;
+      public int TeamOneScore
+      {
+        get { return teamOneScore; }
+        set { teamOneScore = value; OnPropertyChanged(); }
+      }
 
-			public MainPageViewModel()
-			{
-				IncreaseGoalCountCommand = new Command<string>(IncreaseGoalCount);
+      int teamTwoScore;
+      public int TeamTwoScore
+      {
+        get { return teamTwoScore; }
+        set { teamTwoScore = value; OnPropertyChanged(); }
+      }
 
-				GoalTeamOneTapCommand = new Command(GoalTeamOneTap);
-				GoalTeamTwoTapCommand = new Command(GoalTeamTwoTap);
+      public MainPageViewModel()
+      {
+        IncreaseGoalCountCommand = new Command<string>(IncreaseGoalCount);
 
-				TeamOneScore = 0;
-				TeamTwoScore = 0;
-			}
+        GoalTeamOneTapCommand = new Command(GoalTeamOneTap);
+        GoalTeamTwoTapCommand = new Command(GoalTeamTwoTap);
 
-			void IncreaseGoalCount(string team)
-			{
-				switch (team)
-				{
-					case "Goal for team 1":
-						TeamOneScore += 1;
-						break;
-					case "Goal for team 2":
-						TeamTwoScore += 1;
-						break;
-					default:
-						break;
-				}
-			}
+        StartTimerCommand = new Command(StartTimer);
 
-			void GoalTeamOneTap()
-			{
-				TeamOneScore += 1;
-			}
+        TeamOneScore = 0;
+        TeamTwoScore = 0;
 
-			void GoalTeamTwoTap()
-			{
-				TeamTwoScore += 1;
-			}
+        TimeLeft = TimeSpan.FromMinutes(5).ToString(@"mm\:ss");
+      }
 
-			public event PropertyChangedEventHandler PropertyChanged;
-			void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
-					PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-	}
+      void IncreaseGoalCount(string team)
+      {
+        switch (team)
+        {
+          case "Goal for team 1":
+            TeamOneScore += 1;
+            break;
+          case "Goal for team 2":
+            TeamTwoScore += 1;
+            break;
+          default:
+            break;
+        }
+      }
+
+      void GoalTeamOneTap()
+      {
+        TeamOneScore += 1;
+      }
+
+      void GoalTeamTwoTap()
+      {
+        TeamTwoScore += 1;
+      }
+
+      public void PlaySound()
+      {
+        DependencyService.Get<IAudio>().PlayAudioFile("whistle.mp3");
+      }
+
+      public void StartTimer()
+      {
+        int number = 3;
+
+        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+        {
+          if (number-- == 0)
+          {
+            try
+            {
+              CrossNotifications.Current.Vibrate(3000);
+              PlaySound();
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            return false;
+          }
+          else
+          {
+            TimeLeft = TimeSpan.FromSeconds(number).ToString(@"mm\:ss");
+          }
+
+          return true;
+        });
+      }
+
+      public event PropertyChangedEventHandler PropertyChanged;
+      void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+  }
 }
