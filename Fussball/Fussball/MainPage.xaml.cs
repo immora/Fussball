@@ -9,13 +9,17 @@ using System.Windows.Input;
 using Acr.Notifications;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Fussball.Players.Model;
+using Fussball.Players;
 
 namespace Fussball
 {
   [XamlCompilation(XamlCompilationOptions.Compile)]
   public partial class MainPage : ContentPage
   {
-    public MainPage()
+		SelectPlayersPage selectPlayersPage;
+
+		public MainPage()
     {
       InitializeComponent();
       BindingContext = new MainPageViewModel();
@@ -26,7 +30,28 @@ namespace Fussball
       BindingContext = new MainPageViewModel();
     }
 
-    public class MainPageViewModel : INotifyPropertyChanged
+		private async void SelectPlayers(object sender, EventArgs e)
+		{
+			var players = new List<Player>
+			{
+				new Player { DisplayName = "Kasia" },
+				new Player { DisplayName = "Mario" },
+				new Player { DisplayName = "Mariusz" },
+				new Player { DisplayName = "Piotrek" },
+				new Player { DisplayName = "Robert" },
+				new Player { DisplayName = "Sławek" },
+				new Player { DisplayName = "Gość" }
+			};
+
+			if (selectPlayersPage == null)
+			{
+				selectPlayersPage = new SelectPlayersPage(players) { Title = "Wybór graczy" };
+			}
+
+			await Navigation.PushAsync(selectPlayersPage);
+		}
+
+		public class MainPageViewModel : INotifyPropertyChanged
     {
       public ICommand IncreaseGoalCountCommand { get; }
       public ICommand GoalTeamOneTapCommand { get; }

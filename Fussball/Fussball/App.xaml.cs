@@ -8,14 +8,14 @@ using Xamarin.Forms.Xaml;
 
 namespace Fussball
 {
-  [XamlCompilation(XamlCompilationOptions.Compile)]
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class App : Application
 	{
 		public App()
 		{
 			InitializeComponent();
 
-			MainPage = new Fussball.MainPage();
+			MainPage = new NavigationPage(new HomePage());
 		}
 
 		protected override void OnStart()
