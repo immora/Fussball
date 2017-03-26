@@ -11,9 +11,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using Fussball;
 using Fussball.Droid;
 using Xamarin.Forms;
+using Fussball.Interface;
 
 [assembly: Dependency(typeof(AudioService))]
 namespace Fussball.Droid
