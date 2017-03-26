@@ -1,4 +1,6 @@
-﻿using Fussball.Players;
+﻿using Fussball.Gameplay;
+using Fussball.Gameplay.ViewModels;
+using Fussball.Players;
 using Fussball.Players.Model;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,18 @@ namespace Fussball
 	public class HomePage : ContentPage
 	{
 		SelectPlayersPage selectPlayersPage;
-		Label pickedPlayersLabel;
+		Image PlayerImg1;
+		Image PlayerImg2;
+		Image PlayerImg3;
+		Image PlayerImg4;
+		Button letsPlayButton;
+
+		List<Player> selectedPlayers;
 
 		public HomePage()
 		{
+			selectedPlayers = new List<Player>();
+
 			Label header = new Label
 			{
 				Text = "Piłkarzyki",
@@ -45,23 +55,78 @@ namespace Fussball
 
 			choosePlayersButton.Clicked += SelectPlayers;
 
-			pickedPlayersLabel = new Label
+			PlayerImg1 = new Image
 			{
-				FontSize = 28
+				WidthRequest = 200,
+				HeightRequest = 200,
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Source = ImageSource.FromFile("anon1.png")
+			};
+			PlayerImg2 = new Image
+			{
+				WidthRequest = 200,
+				HeightRequest = 200,
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Source = ImageSource.FromFile("anon2.png")
+			};
+			PlayerImg3 = new Image
+			{
+				WidthRequest = 200,
+				HeightRequest = 200,
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Source = ImageSource.FromFile("anon3.png")
+			};
+			PlayerImg4 = new Image
+			{
+				WidthRequest = 200,
+				HeightRequest = 200,
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Source = ImageSource.FromFile("anon4.png")
 			};
 
-			ImageButton playerImageButton = new ImageButton
+			Grid playersGrid = new Grid
 			{
-				ImageHeightRequest = 150,
-				ImageWidthRequest = 150,
-				Orientation = XLabs.Enums.ImageOrientation.ImageOnTop,
-				Source = ImageSource.FromFile("kasia.jpg")
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				RowDefinitions =
+				{
+					new RowDefinition { Height = new GridLength(150)},
+					new RowDefinition { Height = new GridLength(150)},
+				},
+				ColumnDefinitions =
+				{
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star)},
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star)}
+				}
 			};
 
-			Image image = new Image
+			playersGrid.Children.Add(PlayerImg1, 0, 0);
+			playersGrid.Children.Add(PlayerImg2, 0, 1);
+
+			playersGrid.Children.Add(PlayerImg3, 1, 0);
+			playersGrid.Children.Add(PlayerImg4, 1, 1);
+
+			//ImageButton playerImageButton = new ImageButton
+			//{
+			//	ImageHeightRequest = 150,
+			//	ImageWidthRequest = 150,
+			//	Orientation = XLabs.Enums.ImageOrientation.ImageOnBottom,
+			//	Source = ImageSource.FromFile("kasia.jpg")
+			//};
+
+			letsPlayButton = new Button
 			{
-				Source = ImageSource.FromFile("kasia.jpg")
+				Text = "Gramy!",
+				Font = Font.SystemFontOfSize(NamedSize.Large),
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				IsVisible = false
 			};
+
+			letsPlayButton.Clicked += StartGame;
 
 			Content = new StackLayout
 			{
@@ -70,11 +135,30 @@ namespace Fussball
 					header,
 					//timePicker,
 					choosePlayersButton,
-					pickedPlayersLabel,
-					playerImageButton,
-					image
+					//pickedPlayersLabel,
+					//playerImageButton,
+					//PlayerImg1,
+					//PlayerImg2,
+					//PlayerImg3,
+					//PlayerImg4
+					playersGrid,
+					letsPlayButton
 				}
 			};
+		}
+
+		private void StartGame(object sender, EventArgs e)
+		{
+			//var scorePage = new MainPage();
+			//scorePage.BindingContext = new GameViewModel(selectedPlayers);
+
+			////var fsdfsv = Navigation.NavigationStack; pytanie czy nie dałoby się wyczyścić stacka
+			//Navigation.PushAsync(scorePage, true);
+
+			var gamePage = new GamePage();
+			gamePage.BindingContext = new GameViewModel(selectedPlayers);
+
+			Navigation.PushAsync(gamePage, true);
 		}
 
 		private async void SelectPlayers(object sender, EventArgs e)
@@ -102,20 +186,24 @@ namespace Fussball
 		{
 			base.OnAppearing();
 
-			if (selectPlayersPage != null)
+			if (selectPlayersPage != null && selectPlayersPage.GetSelection().Count > 0)
 			{
-				pickedPlayersLabel.Text = "";
+				//pickedPlayersLabel.Text = "";
 
-				var players = selectPlayersPage.GetSelection();
+				selectedPlayers = selectPlayersPage.GetSelection();
 
-				foreach (Player player in players)
-				{
-					pickedPlayersLabel.Text += player.DisplayName + ", ";
-				}
+				PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarPath);
+				PlayerImg2.Source = ImageSource.FromFile(selectedPlayers[1].AvatarPath);
+				PlayerImg3.Source = ImageSource.FromFile(selectedPlayers[2].AvatarPath);
+				PlayerImg4.Source = ImageSource.FromFile(selectedPlayers[3].AvatarPath);
+
+				letsPlayButton.IsVisible = true;
 			}
 			else
 			{
-				pickedPlayersLabel.Text = "(brak)";
+				//reset avatars?
+
+				letsPlayButton.IsVisible = false;
 			}
 		}
 

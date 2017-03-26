@@ -1,4 +1,4 @@
-﻿namespace Fussball
+﻿namespace Fussball.Interface
 {
   public interface IAudio
   {

@@ -29,9 +29,12 @@ namespace Fussball.Players
 
 				var o = (WrappedSelection)e.SelectedItem;
 				o.IsSelected = !o.IsSelected;
-
+				
 				((ListView)sender).SelectedItem = null; //deselect
 			};
+
+			var height = Application.Current.MainPage.Height;
+			mainList.RowHeight = (int)(height - 50)/ players.Count;
 
 			Content = mainList;
 
@@ -40,12 +43,19 @@ namespace Fussball.Players
 
 		public List<Player> GetSelection()
 		{
-			return WrappedItems.Where(item => item.IsSelected).Select(wrappedItem => wrappedItem.Player).ToList();
+			var selectedItems = WrappedItems.Where(item => item.IsSelected).Select(wrappedItem => wrappedItem.Player).ToList();
+
+			if (selectedItems.Count < 4)
+			{
+				return new List<Player>();
+			}
+
+			return selectedItems.Take(4).ToList();
 		}
 
 		private void SelectNone()
 		{
-			foreach(var wi in WrappedItems)
+			foreach (var wi in WrappedItems)
 			{
 				wi.IsSelected = false;
 			}
