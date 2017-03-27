@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using ImageCircle.Forms.Plugin.Abstractions;
 using Xamarin.Forms;
 
 namespace Fussball.Players
@@ -10,10 +11,13 @@ namespace Fussball.Players
 		{
 			public WrappedPlayerSelectionTemplate() : base()
 			{
-				Image image = new Image();
+        CircleImage image = new CircleImage();
 				image.SetBinding(Image.SourceProperty, new Binding("Player.AvatarPath"));
+        image.Aspect = Aspect.AspectFit;
+        image.BorderColor = Color.White;
+        image.BorderThickness = 3;
 
-				Label name = new Label();
+        Label name = new Label();
 				name.SetBinding(Label.TextProperty, new Binding("Player.DisplayName"));
 
 				Switch mainSwitch = new Switch();

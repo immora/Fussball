@@ -11,20 +11,20 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Fussball.Players.Model;
 using Fussball.Players;
-using Fussball.Gameplay.ViewModels;
+using Fussball.Gameplay;
 
 namespace Fussball
 {
   [XamlCompilation(XamlCompilationOptions.Compile)]
   public partial class MainPage : ContentPage
   {
-		GameViewModel pageModel;
+		GamePageModel pageModel;
 
 		public MainPage()
     {
       InitializeComponent();
 			//BindingContext = new GameViewModel(new List<Player>());
-			pageModel = BindingContext as GameViewModel;
+			pageModel = BindingContext as GamePageModel;
 		}
 
     private void ResetScore(object sender, EventArgs e)

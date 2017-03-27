@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fussball.Services
+namespace Fussball.Models
 {
-	public class MatchService
-	{
-	}
+  public class Player
+  {
+    public string DisplayName { get; set; }
+  }
 }

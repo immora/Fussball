@@ -1,5 +1,4 @@
 ﻿using Fussball.Gameplay;
-using Fussball.Gameplay.ViewModels;
 using Fussball.Players;
 using Fussball.Players.Model;
 using System;
@@ -9,17 +8,17 @@ using System.Reflection.Emit;
 using System.Text;
 
 using Xamarin.Forms;
-using XLabs.Forms.Controls;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace Fussball
 {
 	public class HomePage : ContentPage
 	{
 		SelectPlayersPage selectPlayersPage;
-		Image PlayerImg1;
-		Image PlayerImg2;
-		Image PlayerImg3;
-		Image PlayerImg4;
+		CircleImage PlayerImg1;
+    CircleImage PlayerImg2;
+    CircleImage PlayerImg3;
+    CircleImage PlayerImg4;
 		Button letsPlayButton;
 
 		List<Player> selectedPlayers;
@@ -55,37 +54,41 @@ namespace Fussball
 
 			choosePlayersButton.Clicked += SelectPlayers;
 
-			PlayerImg1 = new Image
-			{
+			PlayerImg1 = new CircleImage
+      {
 				WidthRequest = 200,
 				HeightRequest = 200,
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Source = ImageSource.FromFile("anon1.png")
+        Aspect = Aspect.AspectFill,
+        Source = ImageSource.FromFile("anon1.png")
 			};
-			PlayerImg2 = new Image
-			{
+			PlayerImg2 = new CircleImage
+      {
 				WidthRequest = 200,
 				HeightRequest = 200,
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Source = ImageSource.FromFile("anon2.png")
+        Aspect = Aspect.AspectFill,
+        Source = ImageSource.FromFile("anon2.png")
 			};
-			PlayerImg3 = new Image
-			{
+			PlayerImg3 = new CircleImage
+      {
 				WidthRequest = 200,
 				HeightRequest = 200,
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Source = ImageSource.FromFile("anon3.png")
+        Aspect = Aspect.AspectFill,
+        Source = ImageSource.FromFile("anon3.png")
 			};
-			PlayerImg4 = new Image
-			{
+			PlayerImg4 = new CircleImage
+      {
 				WidthRequest = 200,
 				HeightRequest = 200,
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Source = ImageSource.FromFile("anon4.png")
+        Aspect = Aspect.AspectFill,
+        Source = ImageSource.FromFile("anon4.png")
 			};
 
 			Grid playersGrid = new Grid
@@ -156,7 +159,7 @@ namespace Fussball
 			//Navigation.PushAsync(scorePage, true);
 
 			var gamePage = new GamePage();
-			gamePage.BindingContext = new GameViewModel(selectedPlayers);
+			gamePage.BindingContext = new GamePageModel(selectedPlayers);
 
 			Navigation.PushAsync(gamePage, true);
 		}
@@ -192,12 +195,23 @@ namespace Fussball
 
 				selectedPlayers = selectPlayersPage.GetSelection();
 
-				PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarPath);
-				PlayerImg2.Source = ImageSource.FromFile(selectedPlayers[1].AvatarPath);
-				PlayerImg3.Source = ImageSource.FromFile(selectedPlayers[2].AvatarPath);
-				PlayerImg4.Source = ImageSource.FromFile(selectedPlayers[3].AvatarPath);
+        PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarPath);
+        PlayerImg1.BorderColor = Color.White;
+        PlayerImg1.BorderThickness = 3;
 
-				letsPlayButton.IsVisible = true;
+				PlayerImg2.Source = ImageSource.FromFile(selectedPlayers[1].AvatarPath);
+        PlayerImg2.BorderColor = Color.White;
+        PlayerImg2.BorderThickness = 3;
+
+        PlayerImg3.Source = ImageSource.FromFile(selectedPlayers[2].AvatarPath);
+        PlayerImg3.BorderColor = Color.White;
+        PlayerImg3.BorderThickness = 3;
+
+        PlayerImg4.Source = ImageSource.FromFile(selectedPlayers[3].AvatarPath);
+        PlayerImg4.BorderColor = Color.White;
+        PlayerImg4.BorderThickness = 3;
+
+        letsPlayButton.IsVisible = true;
 			}
 			else
 			{

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
-
+using Fussball.Players.Model;
+using ImageCircle.Forms.Plugin.Abstractions;
 using Xamarin.Forms;
 
 namespace Fussball.Gameplay
 {
 	public class GamePage : ContentPage
 	{
-		private const int PlayersCount = 4;
-
+    private const int PlayersCount = 4;
+    
 		public GamePage()
 		{
-			Label header = new Label
+      Label header = new Label
 			{
 				Text = "Piłkarzyki",
 				FontSize = 50,
@@ -27,14 +28,7 @@ namespace Fussball.Gameplay
 				FontSize = 96,
 				HorizontalOptions = LayoutOptions.CenterAndExpand
 			};
-			countDownTimerLabel.SetBinding(Label.TextProperty, "TimeLeft");
-
-			Button startGameButton = new Button
-			{
-				Text = "Start",
-				HorizontalOptions = LayoutOptions.FillAndExpand
-			};
-			startGameButton.SetBinding(Button.CommandProperty, new Binding("StartTimerCommand"));
+			countDownTimerLabel.SetBinding(Label.TextProperty, new Binding("TimeLeft"));
 
 			#region scoreGrid
 			Grid scoreGrid = new Grid
@@ -122,32 +116,44 @@ namespace Fussball.Gameplay
 				}
 			};
 
-			Image playerImage1 = new Image
-			{
+      CircleImage playerImage1 = new CircleImage
+      {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
+        Aspect = Aspect.AspectFit,
+        BorderColor = Color.Accent,
+        BorderThickness = 3
 			};
 			playerImage1.SetBinding(Image.SourceProperty, new Binding("Players[0].AvatarPath"));
 
-			Image playerImage2 = new Image
-			{
+      CircleImage playerImage2 = new CircleImage
+      {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-			};
+        Aspect = Aspect.AspectFit,
+        BorderColor = Color.Accent,
+        BorderThickness = 3
+      };
 			playerImage2.SetBinding(Image.SourceProperty, new Binding("Players[1].AvatarPath"));
 
-			Image playerImage3 = new Image
-			{
+      CircleImage playerImage3 = new CircleImage
+      {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-			};
+        Aspect = Aspect.AspectFit,
+        BorderColor = Color.Accent,
+        BorderThickness = 3
+      };
 			playerImage3.SetBinding(Image.SourceProperty, new Binding("Players[2].AvatarPath"));
 
-			Image playerImage4 = new Image
-			{
+      CircleImage playerImage4 = new CircleImage
+      {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-			};
+        Aspect = Aspect.AspectFit,
+        BorderColor = Color.Accent,
+        BorderThickness = 3
+      };
 			playerImage4.SetBinding(Image.SourceProperty, new Binding("Players[3].AvatarPath"));
 
 			playersGrid.Children.Add(playerImage1, 0, 0);
@@ -155,27 +161,51 @@ namespace Fussball.Gameplay
 			playersGrid.Children.Add(playerImage3, 0, 1);
 			playersGrid.Children.Add(playerImage4, 1, 1);
 
-			#endregion playersGrid
+      #endregion playersGrid
 
-			Button resetGameButton = new Button
+      Button startGameButton = new Button
+      {
+        Text = "Start",
+        HorizontalOptions = LayoutOptions.FillAndExpand
+      };
+      startGameButton.SetBinding(Button.CommandProperty, new Binding("StartTimerCommand"));
+
+      Button resetGameButton = new Button
 			{
 				Text = "Reset",
-				HorizontalOptions = LayoutOptions.Center
-			};
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+        
+      };
 			resetGameButton.SetBinding(Button.CommandProperty, new Binding("ResetGameCommand"));
 
-			Content = new StackLayout
+      StackLayout buttons = new StackLayout
+      {
+        Orientation = StackOrientation.Horizontal
+      };
+      buttons.Children.Add(startGameButton);
+      buttons.Children.Add(resetGameButton);
+      
+      Content = new StackLayout
 			{
 				Children =
 				{
 					//header,
 					countDownTimerLabel,
-					startGameButton,
 					scoreGrid,
 					playersGrid,
-					resetGameButton
-				}
+          buttons
+          //startGameButton,
+          //resetGameButton
+        }
 			};
 		}
-	}
+    //protected override void OnBindingContextChanged()
+    //{
+    //  base.OnBindingContextChanged();
+
+    //  pageModel = BindingContext as GamePageModel;
+
+    //  // Modify the page based on the pageModel
+    //}
+  }
 }

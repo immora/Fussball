@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Fussball.Gameplay.ViewModels
+namespace Fussball.Gameplay
 {
 
-	public class GameViewModel : INotifyPropertyChanged
+	public class GamePageModel : INotifyPropertyChanged
 	{
 		public ICommand IncreaseGoalCountCommand { get; }
 		public ICommand GoalTeamOneTapCommand { get; }
@@ -59,12 +59,9 @@ namespace Fussball.Gameplay.ViewModels
 			set { firstPlayer = value; }
 		}
 
-		public GameViewModel(List<Player> players)
+		public GamePageModel(List<Player> players)
 		{
 			Players = players;
-			//FirstPlayer = players[0].DisplayName;
-
-			//IncreaseGoalCountCommand = new Command<string>(IncreaseGoalCount);
 
 			GoalTeamOneTapCommand = new Command(GoalTeamOneTap);
 			GoalTeamTwoTapCommand = new Command(GoalTeamTwoTap);
