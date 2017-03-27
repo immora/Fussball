@@ -116,7 +116,7 @@ namespace Fussball.Gameplay
 				}
 			};
 
-      CircleImage playerImage1 = new CircleImage
+      CircleImage teamHomePlayer1 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -124,9 +124,9 @@ namespace Fussball.Gameplay
         BorderColor = Color.Accent,
         BorderThickness = 3
 			};
-			playerImage1.SetBinding(Image.SourceProperty, new Binding("Players[0].AvatarPath"));
+			teamHomePlayer1.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[0].AvatarPath"));
 
-      CircleImage playerImage2 = new CircleImage
+      CircleImage teamHomePlayer2 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -134,9 +134,9 @@ namespace Fussball.Gameplay
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-			playerImage2.SetBinding(Image.SourceProperty, new Binding("Players[1].AvatarPath"));
+			teamHomePlayer2.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[1].AvatarPath"));
 
-      CircleImage playerImage3 = new CircleImage
+      CircleImage teamAwayPlayer1 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -144,9 +144,9 @@ namespace Fussball.Gameplay
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-			playerImage3.SetBinding(Image.SourceProperty, new Binding("Players[2].AvatarPath"));
+			teamAwayPlayer1.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[0].AvatarPath"));
 
-      CircleImage playerImage4 = new CircleImage
+      CircleImage teamAwayPlayer2 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -154,12 +154,12 @@ namespace Fussball.Gameplay
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-			playerImage4.SetBinding(Image.SourceProperty, new Binding("Players[3].AvatarPath"));
+			teamAwayPlayer2.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[1].AvatarPath"));
 
-			playersGrid.Children.Add(playerImage1, 0, 0);
-			playersGrid.Children.Add(playerImage2, 1, 0);
-			playersGrid.Children.Add(playerImage3, 0, 1);
-			playersGrid.Children.Add(playerImage4, 1, 1);
+			playersGrid.Children.Add(teamHomePlayer1, 0, 0);
+			playersGrid.Children.Add(teamHomePlayer2, 0, 1);
+			playersGrid.Children.Add(teamAwayPlayer1, 1, 0);
+			playersGrid.Children.Add(teamAwayPlayer2, 1, 1);
 
       #endregion playersGrid
 

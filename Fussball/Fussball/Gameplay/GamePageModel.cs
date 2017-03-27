@@ -1,4 +1,5 @@
 ﻿using Acr.Notifications;
+using Fussball.Gameplay.Models;
 using Fussball.Interface;
 using Fussball.Players.Model;
 using System;
@@ -45,23 +46,27 @@ namespace Fussball.Gameplay
 			set { teamTwoScore = value; OnPropertyChanged(); }
 		}
 
-		List<Player> players;
-		public List<Player> Players
+		List<Player> teamHomePlayers;
+		public List<Player> TeamHomePlayers
 		{
-			get { return players; }
-			set { players = value; }
+			get { return teamHomePlayers; }
+			set { teamHomePlayers = value; }
 		}
 
-		string firstPlayer;
-		public string FirstPlayer
+		List<Player> teamAwayPlayers;
+		public List<Player> TeamAwayPlayers
 		{
-			get { return firstPlayer; }
-			set { firstPlayer = value; }
+			get { return teamAwayPlayers; }
+			set { teamAwayPlayers = value; }
 		}
 
 		public GamePageModel(List<Player> players)
 		{
-			Players = players;
+			GameService gameService = new GameService();
+			List<Match> matches = gameService.GenerateMatches(players);
+
+			TeamHomePlayers = matches.First().TeamHome;
+			TeamAwayPlayers = matches.First().TeamAway;
 
 			GoalTeamOneTapCommand = new Command(GoalTeamOneTap);
 			GoalTeamTwoTapCommand = new Command(GoalTeamTwoTap);

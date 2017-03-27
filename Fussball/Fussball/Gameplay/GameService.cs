@@ -5,45 +5,49 @@ using System.Text;
 using System.Threading.Tasks;
 using Fussball.Gameplay.Models;
 using Fussball.Players.Model;
+using Fussball.Utils.ExtensionMethods;
 
 namespace Fussball
 {
-  public class GameService
-  {
-    public List<Match> matches;
-    public const int MatchCount = 3;
+	public class GameService
+	{
+		public List<Match> matches;
+		public const int MatchCount = 3;
 
-    public GameService()
-    {
-      matches = new List<Match>();
-    }
+		public GameService()
+		{
+			matches = new List<Match>();
+		}
 
-    public List<Match> GenerateMatches(List<Player> players)
-    {
-      matches = new List<Match>();
+		public List<Match> GenerateMatches(List<Player> players)
+		{
+			List<Tuple<Player, Player>> playersWithoutDuplicates = new List<Tuple<Player, Player>>();
 
-      Random rand = new Random();
+			Random rand = new Random();
+			players.Shuffle(rand);
 
-      for (int i = 0; i < MatchCount; i++)
-      {
-        List<Player> copyOfPlayers = new List<Player>();
-        copyOfPlayers.AddRange(players);
+			var cartesianProductOfPlayers = from x in players
+																			from y in players
+																			where x != y
+																			select new Tuple<Player, Player>(x, y);
 
-        Match match = new Match();
 
-        Player p1 = copyOfPlayers[rand.Next(0, 3)];
-        copyOfPlayers.Remove(p1);
-        Player p2 = copyOfPlayers[rand.Next(0, 2)];
-        copyOfPlayers.Remove(p2);
+			foreach (var tuple in cartesianProductOfPlayers)
+			{
+				if (!playersWithoutDuplicates.Contains(tuple) && !playersWithoutDuplicates.Contains(new Tuple<Player, Player>(tuple.Item2, tuple.Item1)))
+				{
+					playersWithoutDuplicates.Add(tuple);
+				}
+			}
 
-        match.TeamHome = new List<Player> { p1, p2 };
-        match.TeamAway = new List<Player>();
-        match.TeamAway.AddRange(copyOfPlayers);
+			matches = new List<Match>
+			{
+				new Match(playersWithoutDuplicates.First().ToList(), playersWithoutDuplicates.Last().ToList()),
+				new Match(playersWithoutDuplicates[1].ToList(), playersWithoutDuplicates[4].ToList()),
+				new Match(playersWithoutDuplicates[2].ToList(), playersWithoutDuplicates[3].ToList())
+			};
 
-        matches.Add(match);
-      }
-
-      return matches;
-    }
-  }
+			return matches;
+		}
+	}
 }
