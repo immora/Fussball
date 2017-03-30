@@ -37,8 +37,6 @@ namespace Fussball.Players
 			mainList.RowHeight = (int)(height - 50)/ players.Count;
 
 			Content = mainList;
-
-			//ToolbarItems.Add(new ToolbarItem("None", null, SelectNone, ToolbarItemOrder.Primary));
 		}
 
 		public List<Player> GetSelection()

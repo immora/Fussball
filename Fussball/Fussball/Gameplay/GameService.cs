@@ -11,12 +11,12 @@ namespace Fussball
 {
 	public class GameService
 	{
-		public List<Match> matches;
+		public List<Match> Matches;
 		public const int MatchCount = 3;
 
 		public GameService()
 		{
-			matches = new List<Match>();
+			Matches = new List<Match>();
 		}
 
 		public List<Match> GenerateMatches(List<Player> players)
@@ -40,14 +40,14 @@ namespace Fussball
 				}
 			}
 
-			matches = new List<Match>
+			Matches = new List<Match>
 			{
 				new Match(playersWithoutDuplicates.First().ToList(), playersWithoutDuplicates.Last().ToList()),
 				new Match(playersWithoutDuplicates[1].ToList(), playersWithoutDuplicates[4].ToList()),
 				new Match(playersWithoutDuplicates[2].ToList(), playersWithoutDuplicates[3].ToList())
 			};
 
-			return matches;
+			return Matches;
 		}
 	}
 }

@@ -44,6 +44,7 @@
     <Compile Include="Gameplay\GamePage.cs" />
     <Compile Include="Gameplay\GamePageModel.cs" />
     <Compile Include="Gameplay\GameService.cs" />
+    <Compile Include="Gameplay\MatchService.cs" />
     <Compile Include="Gameplay\Models\Game.cs" />
     <Compile Include="Gameplay\Models\Match.cs" />
     <Compile Include="HomePage.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="Players\SelectPlayersPage.cs" />
     <Compile Include="Utils\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Utils\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="Utils\DictionaryToStringConverter.cs" />
+    <Compile Include="Utils\MyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">

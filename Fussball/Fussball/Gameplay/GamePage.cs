@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Fussball.Utils.ExtensionMethods;
 using Fussball.Players.Model;
 using ImageCircle.Forms.Plugin.Abstractions;
 using Xamarin.Forms;
+using Fussball.Utils;
 
 namespace Fussball.Gameplay
 {
@@ -30,6 +33,23 @@ namespace Fussball.Gameplay
 			};
 			countDownTimerLabel.SetBinding(Label.TextProperty, new Binding("TimeLeft"));
 
+			var tapGoalForTeamHome = new TapGestureRecognizer();
+			tapGoalForTeamHome.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
+
+			var tapGoalForTeamHomePlayerOne = new TapGestureRecognizer();
+			tapGoalForTeamHomePlayerOne.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
+			var tapGoalForTeamHomePlayerTwo = new TapGestureRecognizer();
+			tapGoalForTeamHomePlayerTwo.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
+
+			var tapGoalForTeamAway = new TapGestureRecognizer();
+			tapGoalForTeamAway.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
+
+			var tapGoalForTeamAwayPlayerOne = new TapGestureRecognizer();
+			tapGoalForTeamAwayPlayerOne.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
+			var tapGoalForTeamAwayPlayerTwo = new TapGestureRecognizer();
+			tapGoalForTeamAwayPlayerTwo.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
+
+
 			#region scoreGrid
 			Grid scoreGrid = new Grid
 			{
@@ -46,15 +66,13 @@ namespace Fussball.Gameplay
 			};
 
 			#region ScoreTeamOne
-			var tapGoalForTeamOne = new TapGestureRecognizer();
-			tapGoalForTeamOne.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
 
 			ContentView contentForTapScoreOne = new ContentView
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
-			contentForTapScoreOne.GestureRecognizers.Add(tapGoalForTeamOne);
+			contentForTapScoreOne.GestureRecognizers.Add(tapGoalForTeamHome);
 
 			Label scoreTeamOneLabel = new Label
 			{
@@ -69,15 +87,12 @@ namespace Fussball.Gameplay
 
 			#region ScoreTeamTwo
 
-			var tapGoalForTeamTwo = new TapGestureRecognizer();
-			tapGoalForTeamTwo.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
-
 			ContentView contentForTapScoreTwo = new ContentView
 			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
-			contentForTapScoreTwo.GestureRecognizers.Add(tapGoalForTeamTwo);
+			contentForTapScoreTwo.GestureRecognizers.Add(tapGoalForTeamAway);
 
 			Label scoreTeamTwoLabel = new Label
 			{
@@ -125,8 +140,11 @@ namespace Fussball.Gameplay
         BorderThickness = 3
 			};
 			teamHomePlayer1.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[0].AvatarPath"));
+			tapGoalForTeamHomePlayerOne.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamHomePlayers[0]"));
+			teamHomePlayer1.GestureRecognizers.Add(tapGoalForTeamHomePlayerOne);
 
-      CircleImage teamHomePlayer2 = new CircleImage
+
+			CircleImage teamHomePlayer2 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -135,8 +153,10 @@ namespace Fussball.Gameplay
         BorderThickness = 3
       };
 			teamHomePlayer2.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[1].AvatarPath"));
+			tapGoalForTeamHomePlayerTwo.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamHomePlayers[1]"));
+			teamHomePlayer2.GestureRecognizers.Add(tapGoalForTeamHomePlayerTwo);
 
-      CircleImage teamAwayPlayer1 = new CircleImage
+			CircleImage teamAwayPlayer1 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -145,8 +165,10 @@ namespace Fussball.Gameplay
         BorderThickness = 3
       };
 			teamAwayPlayer1.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[0].AvatarPath"));
+			tapGoalForTeamAwayPlayerOne.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamAwayPlayers[0]"));
+			teamAwayPlayer1.GestureRecognizers.Add(tapGoalForTeamAwayPlayerOne);
 
-      CircleImage teamAwayPlayer2 = new CircleImage
+			CircleImage teamAwayPlayer2 = new CircleImage
       {
 				HorizontalOptions = LayoutOptions.Center,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -155,6 +177,8 @@ namespace Fussball.Gameplay
         BorderThickness = 3
       };
 			teamAwayPlayer2.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[1].AvatarPath"));
+			tapGoalForTeamAwayPlayerTwo.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamAwayPlayers[1]"));
+			teamAwayPlayer2.GestureRecognizers.Add(tapGoalForTeamAwayPlayerTwo);
 
 			playersGrid.Children.Add(teamHomePlayer1, 0, 0);
 			playersGrid.Children.Add(teamHomePlayer2, 0, 1);
@@ -165,47 +189,39 @@ namespace Fussball.Gameplay
 
       Button startGameButton = new Button
       {
-        Text = "Start",
         HorizontalOptions = LayoutOptions.FillAndExpand
       };
-      startGameButton.SetBinding(Button.CommandProperty, new Binding("StartTimerCommand"));
+      startGameButton.SetBinding(Button.CommandProperty, new Binding("StartOrPauseGameCommand"));
+			startGameButton.SetBinding(Button.TextProperty, new Binding("MatchStatusText"));
 
-      Button resetGameButton = new Button
-			{
-				Text = "Reset",
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-        
-      };
-			resetGameButton.SetBinding(Button.CommandProperty, new Binding("ResetGameCommand"));
+			ToolbarItem resetToolbarItem = new ToolbarItem();
+			resetToolbarItem.Order = ToolbarItemOrder.Primary;
+			resetToolbarItem.Icon = "resetGameIcon.png";
+			resetToolbarItem.SetBinding(ToolbarItem.CommandProperty, new Binding("ResetGameCommand"));
 
-      StackLayout buttons = new StackLayout
-      {
-        Orientation = StackOrientation.Horizontal
-      };
-      buttons.Children.Add(startGameButton);
-      buttons.Children.Add(resetGameButton);
-      
-      Content = new StackLayout
+			ToolbarItems.Add(resetToolbarItem);
+
+			Content = new StackLayout
 			{
 				Children =
 				{
-					//header,
 					countDownTimerLabel,
 					scoreGrid,
 					playersGrid,
-          buttons
-          //startGameButton,
-          //resetGameButton
+          startGameButton
         }
 			};
+
+			SubscribeToEvents();
 		}
-    //protected override void OnBindingContextChanged()
-    //{
-    //  base.OnBindingContextChanged();
 
-    //  pageModel = BindingContext as GamePageModel;
+		public void SubscribeToEvents()
+		{
+			MessagingCenter.Subscribe<GamePageModel, IDictionary<Player, int>>(this, "MatchEnded", (sender, arg) =>
+			{
+				DisplayAlert("Bieda statystyki", DictionaryToStringConverter.DictToString<Player, int>(arg), "Ok, whatever");
+			});
 
-    //  // Modify the page based on the pageModel
-    //}
-  }
+		}
+	}
 }

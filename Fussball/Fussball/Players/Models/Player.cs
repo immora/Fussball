@@ -13,8 +13,14 @@ namespace Fussball.Players.Model
 
 		public string DisplayName { get; set; }
 
-		public string AvatarPath {
+		public string AvatarPath
+		{
 			get => DisplayName.ToLower().ReplacePolishSigns() + ".jpg";
+		}
+
+		public override string ToString()
+		{
+			return DisplayName;
 		}
 	}
 }
