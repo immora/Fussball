@@ -33,7 +33,9 @@ namespace Fussball.Gameplay
 			};
 			countDownTimerLabel.SetBinding(Label.TextProperty, new Binding("TimeLeft"));
 
-			var tapGoalForTeamHome = new TapGestureRecognizer();
+      #region tapGesture
+
+      var tapGoalForTeamHome = new TapGestureRecognizer();
 			tapGoalForTeamHome.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
 
 			var tapGoalForTeamHomePlayerOne = new TapGestureRecognizer();
@@ -42,16 +44,17 @@ namespace Fussball.Gameplay
 			tapGoalForTeamHomePlayerTwo.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
 
 			var tapGoalForTeamAway = new TapGestureRecognizer();
-			tapGoalForTeamAway.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamOneTapCommand"));
+			tapGoalForTeamAway.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
 
 			var tapGoalForTeamAwayPlayerOne = new TapGestureRecognizer();
 			tapGoalForTeamAwayPlayerOne.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
 			var tapGoalForTeamAwayPlayerTwo = new TapGestureRecognizer();
 			tapGoalForTeamAwayPlayerTwo.SetBinding(TapGestureRecognizer.CommandProperty, new Binding("GoalTeamTwoTapCommand"));
 
+      #endregion tapGesture
 
-			#region scoreGrid
-			Grid scoreGrid = new Grid
+      #region scoreGrid
+      Grid scoreGrid = new Grid
 			{
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				RowDefinitions =
