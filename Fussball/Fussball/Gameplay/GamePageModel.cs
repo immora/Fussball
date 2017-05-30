@@ -16,195 +16,194 @@ using Xamarin.Forms;
 namespace Fussball.Gameplay
 {
 
-	public class GamePageModel : INotifyPropertyChanged
-	{
-		public ICommand IncreaseGoalCountCommand { get; }
-		public ICommand GoalTeamOneTapCommand { get; }
-		public ICommand GoalTeamTwoTapCommand { get; }
-		public ICommand StartOrPauseGameCommand { get; set; }
-		public ICommand ResetGameCommand { get; set; }
+  public class GamePageModel : INotifyPropertyChanged
+  {
+    public ICommand IncreaseGoalCountCommand { get; }
+    public ICommand GoalTeamOneTapCommand { get; }
+    public ICommand GoalTeamTwoTapCommand { get; }
+    public ICommand StartOrPauseGameCommand { get; set; }
+    public ICommand ResetGameCommand { get; set; }
 
-		MatchService matchService;
+    public const int MatchDurationInSeconds = 300;
 
-		MyTimer timer;
+    MatchService matchService;
+    MyTimer timer;
+    List<Match> matches;
 
-		int matchNumber;
-		public int MatchNumber
-		{
-			get { return matchNumber; }
-			set { matchNumber = value; OnPropertyChanged(); }
-		}
+    public GamePageModel(List<Player> players)
+    {
+      GameService gameService = new GameService();
+      matchService = new MatchService();
 
-		List<Player> teamHomePlayers;
-		public List<Player> TeamHomePlayers
-		{
-			get { return teamHomePlayers; }
-			set { teamHomePlayers = value; OnPropertyChanged(); }
-		}
+      matches = gameService.GenerateMatches(players);
+      TeamHomePlayers = matches.First().TeamHome;
+      TeamAwayPlayers = matches.First().TeamAway;
 
-		List<Player> teamAwayPlayers;
-		public List<Player> TeamAwayPlayers
-		{
-			get { return teamAwayPlayers; }
-			set { teamAwayPlayers = value; OnPropertyChanged(); }
-		}
+      GoalTeamOneTapCommand = new Command<Player>(GoalTeamOneTap);
+      GoalTeamTwoTapCommand = new Command<Player>(GoalTeamTwoTap);
 
-		int teamOneScore;
-		public int TeamOneScore
-		{
-			get { return teamOneScore; }
-			set { teamOneScore = value; OnPropertyChanged(); }
-		}
+      StartOrPauseGameCommand = new Command(StartOrPauseGame);
+      ResetGameCommand = new Command(ResetGame);
 
-		int teamTwoScore;
-		public int TeamTwoScore
-		{
-			get { return teamTwoScore; }
-			set { teamTwoScore = value; OnPropertyChanged(); }
-		}
+      TeamOneScore = 0;
+      TeamTwoScore = 0;
+      MatchNumber = 0;
+      MatchPaused = true;
 
-		string timeLeft;
-		public string TimeLeft
-		{
-			get { return timeLeft; }
-			set { timeLeft = value; OnPropertyChanged(); }
-		}
+      MatchStatusText = $"Start (mecz {MatchNumber + 1})";
 
-		bool matchPaused;
-		public bool MatchPaused
-		{
-			get { return matchPaused; }
-			set { matchPaused = value; OnPropertyChanged(); }
-		}
+      TimeLeft = TimeSpan.FromMinutes(MatchDurationInSeconds / 60).ToString(@"mm\:ss");
 
-		bool matchEnded;
-		public bool MatchEnded
-		{
-			get { return matchEnded; }
-			set { matchEnded = value; OnPropertyChanged(); }
-		}
+      timer = new MyTimer(TimeSpan.FromSeconds(1),
+        OnMatchEnded,
+        (x) => TimeLeft = TimeSpan.FromSeconds(x).ToString(@"mm\:ss"));
+    }
 
-		string matchStatusText;
-		public string MatchStatusText
-		{
-			get { return matchStatusText; }
-			set { matchStatusText = value; OnPropertyChanged(); }
-		}
+    private void OnMatchEnded()
+    {
+      CrossNotifications.Current.Vibrate(3000);
+      PlaySound();
+      MatchNumber++;
+      MatchEnded = true;
+      ResetGame();
 
-		public List<Match> matches;
+      MessagingCenter.Send<GamePageModel, IDictionary<Player, int>>(this, "MatchEnded", matchService.PlayersGoals);
 
-		public GamePageModel(List<Player> players)
-		{
-			GameService gameService = new GameService();
-			matchService = new MatchService();
+      if (MatchNumber >= 3)
+      {
+        return;
+      }
 
-			matches = gameService.GenerateMatches(players);
-			TeamHomePlayers = matches.First().TeamHome;
-			TeamAwayPlayers = matches.First().TeamAway;
+      TeamHomePlayers = matches[MatchNumber].TeamHome;
+      TeamAwayPlayers = matches[MatchNumber].TeamAway;
 
-			GoalTeamOneTapCommand = new Command<Player>(GoalTeamOneTap);
-			GoalTeamTwoTapCommand = new Command<Player>(GoalTeamTwoTap);
+      matchService.PlayersGoals.Clear();
+    }
 
-			StartOrPauseGameCommand = new Command(StartOrPauseGame);
-			ResetGameCommand = new Command(ResetGame);
+    private void StartOrPauseGame()
+    {
+      if (MatchPaused)
+      {
+        StartTimer();
+        MatchStatusText = $"Pauza (mecz {MatchNumber + 1})";
+        MatchPaused = false;
+      }
+      else
+      {
+        PauseTimer();
+        MatchStatusText = $"Kontynuuj (mecz {MatchNumber + 1 })";
+        MatchPaused = true;
+      }
+    }
 
-			TeamOneScore = 0;
-			TeamTwoScore = 0;
+    private void StartTimer()
+    {
+      timer.Start(MatchDurationInSeconds);
+    }
 
-			MatchNumber = 0;
+    private void PauseTimer()
+    {
+      timer.Pause();
+    }
 
-			MatchPaused = true;
+    private void ResetGame()
+    {
+      TeamOneScore = 0;
+      TeamTwoScore = 0;
 
-			MatchStatusText = $"Start (mecz {MatchNumber + 1})";
+      MatchPaused = true;
 
-			TimeLeft = TimeSpan.FromMinutes(5).ToString(@"mm\:ss");
+      TimeLeft = TimeSpan.FromMinutes(MatchDurationInSeconds / 60).ToString(@"mm\:ss");
+      MatchStatusText = $"Start (mecz {MatchNumber + 1})";
 
-			timer = new MyTimer(TimeSpan.FromSeconds(1),
-				OnMatchEnded,
-				(x) => TimeLeft = TimeSpan.FromSeconds(x).ToString(@"mm\:ss"));
-		}
+      timer.Stop();
+      timer.Reset();
+    }
 
-		private void OnMatchEnded()
-		{
-			CrossNotifications.Current.Vibrate(3000);
-			PlaySound();
-			MatchNumber++;
-			MatchEnded = true;
-			ResetGame();
+    // todo: one method
+    private void GoalTeamOneTap(Player player = null)
+    {
+      TeamOneScore += 1;
+      matchService.AddGoal(player);
+    }
 
-			MessagingCenter.Send<GamePageModel, IDictionary<Player, int>>(this, "MatchEnded", matchService.PlayersGoals);
+    private void GoalTeamTwoTap(Player player = null)
+    {
+      TeamTwoScore += 1;
+      matchService.AddGoal(player);
+    }
 
-			if (MatchNumber >= 3)
-			{
-				return;
-			}
+    private void PlaySound()
+    {
+      DependencyService.Get<IAudio>().PlayAudioFile("whistle.mp3");
+    }
 
-			TeamHomePlayers = matches[MatchNumber].TeamHome;
-			TeamAwayPlayers = matches[MatchNumber].TeamAway;
+    public event PropertyChangedEventHandler PropertyChanged;
+    void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-			matchService.PlayersGoals.Clear();
-		}
+    int matchNumber;
+    public int MatchNumber
+    {
+      get { return matchNumber; }
+      set { matchNumber = value; OnPropertyChanged(); }
+    }
 
-		private void StartOrPauseGame()
-		{
-			if (MatchPaused)
-			{
-				StartTimer();
-				MatchStatusText = $"Pauza (mecz {MatchNumber + 1})";
-				MatchPaused = false;
-			}
-			else
-			{
-				PauseTimer();
-				MatchStatusText = $"Kontynuuj (mecz {MatchNumber + 1 })";
-				MatchPaused = true;
-			}
-		}
+    List<Player> teamHomePlayers;
+    public List<Player> TeamHomePlayers
+    {
+      get { return teamHomePlayers; }
+      set { teamHomePlayers = value; OnPropertyChanged(); }
+    }
 
-		private void StartTimer()
-		{
-			timer.Start(300);
-		}
+    List<Player> teamAwayPlayers;
+    public List<Player> TeamAwayPlayers
+    {
+      get { return teamAwayPlayers; }
+      set { teamAwayPlayers = value; OnPropertyChanged(); }
+    }
 
-		private void PauseTimer()
-		{
-			timer.Pause();
-		}
+    int teamOneScore;
+    public int TeamOneScore
+    {
+      get { return teamOneScore; }
+      set { teamOneScore = value; OnPropertyChanged(); }
+    }
 
-		private void ResetGame()
-		{
-			TeamOneScore = 0;
-			TeamTwoScore = 0;
+    int teamTwoScore;
+    public int TeamTwoScore
+    {
+      get { return teamTwoScore; }
+      set { teamTwoScore = value; OnPropertyChanged(); }
+    }
 
-			MatchPaused = true;
+    string timeLeft;
+    public string TimeLeft
+    {
+      get { return timeLeft; }
+      set { timeLeft = value; OnPropertyChanged(); }
+    }
 
-			TimeLeft = TimeSpan.FromMinutes(5).ToString(@"mm\:ss");
-			MatchStatusText = $"Start (mecz {MatchNumber + 1})";
+    bool matchPaused;
+    public bool MatchPaused
+    {
+      get { return matchPaused; }
+      set { matchPaused = value; OnPropertyChanged(); }
+    }
 
-			timer.Stop();
-			timer.Reset();
-		}
+    bool matchEnded;
+    public bool MatchEnded
+    {
+      get { return matchEnded; }
+      set { matchEnded = value; OnPropertyChanged(); }
+    }
 
-		// todo: one method
-		private void GoalTeamOneTap(Player player = null)
-		{
-			TeamOneScore += 1;
-			matchService.AddGoal(player);
-		}
+    string matchStatusText;
+    public string MatchStatusText
+    {
+      get { return matchStatusText; }
+      set { matchStatusText = value; OnPropertyChanged(); }
+    }
 
-		private void GoalTeamTwoTap(Player player = null)
-		{
-			TeamTwoScore += 1;
-			matchService.AddGoal(player);
-		}
-
-		private void PlaySound()
-		{
-			DependencyService.Get<IAudio>().PlayAudioFile("whistle.mp3");
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
-		void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
-				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	}
+  }
 }
