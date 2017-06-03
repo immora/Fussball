@@ -1,19 +1,17 @@
 ﻿using Acr.Notifications;
-using Fussball.Gameplay.Models;
 using Fussball.Interface;
-using Fussball.Players.Model;
+using Fussball.Models;
+using Fussball.Services;
 using Fussball.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Fussball.Gameplay
+namespace Fussball.ViewModels
 {
 
   public class GamePageModel : INotifyPropertyChanged
@@ -24,7 +22,7 @@ namespace Fussball.Gameplay
     public ICommand StartOrPauseGameCommand { get; set; }
     public ICommand ResetGameCommand { get; set; }
 
-    public const int MatchDurationInSeconds = 300;
+    public const int MatchDurationInSeconds = 60;
 
     MatchService matchService;
     MyTimer timer;
@@ -69,6 +67,10 @@ namespace Fussball.Gameplay
 
       MessagingCenter.Send<GamePageModel, IDictionary<Player, int>>(this, "MatchEnded", matchService.PlayersGoals);
 
+      List<TeamPlayerGoals> stats = CreateStatisticsForEachPlayer();
+
+      MessagingCenter.Send<GamePageModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", stats);
+
       if (MatchNumber >= 3)
       {
         return;
@@ -78,6 +80,25 @@ namespace Fussball.Gameplay
       TeamAwayPlayers = matches[MatchNumber].TeamAway;
 
       matchService.PlayersGoals.Clear();
+    }
+
+    private List<TeamPlayerGoals> CreateStatisticsForEachPlayer()
+    {
+      List<TeamPlayerGoals> result = new List<TeamPlayerGoals>();
+
+      foreach(var goalsForPlayer in matchService.PlayersGoals)
+      {
+        TeamPlayerGoals stats = new TeamPlayerGoals
+        {
+          Player = goalsForPlayer.Key,
+          Goals = goalsForPlayer.Value,
+          Team = TeamHomePlayers.Contains(goalsForPlayer.Key) ? "Team home" : "Team away"
+        };
+
+        result.Add(stats);
+      }
+
+      return result;
     }
 
     private void StartOrPauseGame()
@@ -120,7 +141,6 @@ namespace Fussball.Gameplay
       timer.Reset();
     }
 
-    // todo: one method
     private void GoalTeamOneTap(Player player = null)
     {
       TeamOneScore += 1;
@@ -204,6 +224,5 @@ namespace Fussball.Gameplay
       get { return matchStatusText; }
       set { matchStatusText = value; OnPropertyChanged(); }
     }
-
   }
 }

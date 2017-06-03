@@ -3,7 +3,7 @@ using System.Globalization;
 using ImageCircle.Forms.Plugin.Abstractions;
 using Xamarin.Forms;
 
-namespace Fussball.Players
+namespace Fussball.Views
 {
 	public partial class SelectPlayersPage : ContentPage
 	{

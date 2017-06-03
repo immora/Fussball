@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 
 using Xamarin.Forms;
-using Fussball.Players.Model;
+using Fussball.Models;
 
-namespace Fussball.Players
+namespace Fussball.Views
 {
 	public partial class SelectPlayersPage : ContentPage
 	{

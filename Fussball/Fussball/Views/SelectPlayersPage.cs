@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-
 using Xamarin.Forms;
-using Fussball.Players.Model;
+using Fussball.Models;
 
-namespace Fussball.Players
+namespace Fussball.Views
 {
 	public partial class SelectPlayersPage : ContentPage
 	{

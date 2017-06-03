@@ -1,16 +1,11 @@
-﻿using Fussball.Gameplay;
-using Fussball.Players;
-using Fussball.Players.Model;
+﻿using Fussball.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-
 using Xamarin.Forms;
 using ImageCircle.Forms.Plugin.Abstractions;
+using Fussball.ViewModels;
 
-namespace Fussball
+namespace Fussball.Views
 {
 	public class HomePage : ContentPage
 	{

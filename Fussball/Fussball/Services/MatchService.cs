@@ -1,11 +1,7 @@
-﻿using Fussball.Players.Model;
-using System;
+﻿using Fussball.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Fussball.Gameplay
+namespace Fussball.Services
 {
 	public class MatchService
 	{
@@ -24,11 +20,9 @@ namespace Fussball.Gameplay
 				return;
 			}
 
-			var goals = 0;
-			PlayersGoals.TryGetValue(player, out goals);
+			PlayersGoals.TryGetValue(player, out var goals);
 
 			PlayersGoals[player] = ++goals;
 		}
-
 	}
 }

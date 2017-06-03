@@ -41,32 +41,26 @@
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\ImageButtonSourceConverter.cs" />
     <Compile Include="Controls\ImageOrientation.cs" />
-    <Compile Include="Gameplay\GamePage.cs" />
-    <Compile Include="Gameplay\GamePageModel.cs" />
-    <Compile Include="Gameplay\GameService.cs" />
-    <Compile Include="Gameplay\MatchService.cs" />
-    <Compile Include="Gameplay\Models\Game.cs" />
-    <Compile Include="Gameplay\Models\Match.cs" />
-    <Compile Include="HomePage.cs" />
+    <Compile Include="Views\GamePage.cs" />
+    <Compile Include="ViewModels\GamePageViewModel.cs" />
+    <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\MatchService.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\TeamPlayerGoals.cs" />
+    <Compile Include="Views\HomePage.cs" />
     <Compile Include="Interface\IAudio.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Players\Models\Player.cs" />
-    <Compile Include="Players\WrappedPlayerSelectionTemplate.cs" />
-    <Compile Include="Players\WrappedSelection.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Views\WrappedPlayerSelectionTemplate.cs" />
+    <Compile Include="Views\WrappedSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Players\SelectPlayersPage.cs" />
+    <Compile Include="Views\SelectPlayersPage.cs" />
     <Compile Include="Utils\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Utils\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Utils\DictionaryToStringConverter.cs" />
+    <Compile Include="Utils\ToStringConverter.cs" />
     <Compile Include="Utils\MyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -114,9 +108,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Achievements\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Fussball.Gameplay.Models;
-using Fussball.Players.Model;
+using Fussball.Models;
 using Fussball.Utils.ExtensionMethods;
 
-namespace Fussball
+namespace Fussball.Services
 {
 	public class GameService
 	{

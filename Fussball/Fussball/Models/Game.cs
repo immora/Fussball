@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fussball.Gameplay.Models
+namespace Fussball.Models
 {
   public class Game
   {
