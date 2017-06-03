@@ -65,8 +65,6 @@ namespace Fussball.ViewModels
       MatchEnded = true;
       ResetGame();
 
-      MessagingCenter.Send<GamePageModel, IDictionary<Player, int>>(this, "MatchEnded", matchService.PlayersGoals);
-
       List<TeamPlayerGoals> stats = CreateStatisticsForEachPlayer();
 
       MessagingCenter.Send<GamePageModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", stats);

@@ -41,6 +41,7 @@
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\ImageButtonSourceConverter.cs" />
     <Compile Include="Controls\ImageOrientation.cs" />
+    <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="Views\GamePage.cs" />
     <Compile Include="ViewModels\GamePageViewModel.cs" />
     <Compile Include="Services\GameService.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Views\HomePage.cs" />
     <Compile Include="Interface\IAudio.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Views\SettingsPage.cs" />
     <Compile Include="Views\WrappedPlayerSelectionTemplate.cs" />
     <Compile Include="Views\WrappedSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

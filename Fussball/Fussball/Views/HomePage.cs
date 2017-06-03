@@ -107,14 +107,6 @@ namespace Fussball.Views
 			playersGrid.Children.Add(PlayerImg3, 1, 0);
 			playersGrid.Children.Add(PlayerImg4, 1, 1);
 
-			//ImageButton playerImageButton = new ImageButton
-			//{
-			//	ImageHeightRequest = 150,
-			//	ImageWidthRequest = 150,
-			//	Orientation = XLabs.Enums.ImageOrientation.ImageOnBottom,
-			//	Source = ImageSource.FromFile("kasia.jpg")
-			//};
-
 			letsPlayButton = new Button
 			{
 				Text = "Gramy!",
@@ -126,33 +118,35 @@ namespace Fussball.Views
 
 			letsPlayButton.Clicked += StartGame;
 
-			Content = new StackLayout
+      ToolbarItem settingsToolbarItem = new ToolbarItem();
+      settingsToolbarItem.Order = ToolbarItemOrder.Primary;
+      settingsToolbarItem.Icon = "settingsIcon.png";
+      settingsToolbarItem.SetBinding(ToolbarItem.CommandProperty, new Binding("ShowSettingsPage"));
+      settingsToolbarItem.Clicked += ShowSettingsPage;
+
+      ToolbarItems.Add(settingsToolbarItem);
+
+      Content = new StackLayout
 			{
 				Children =
 				{
 					header,
-					//timePicker,
 					choosePlayersButton,
-					//pickedPlayersLabel,
-					//playerImageButton,
-					//PlayerImg1,
-					//PlayerImg2,
-					//PlayerImg3,
-					//PlayerImg4
 					playersGrid,
 					letsPlayButton
 				}
 			};
 		}
 
-		private void StartGame(object sender, EventArgs e)
+    private void ShowSettingsPage(object sender, EventArgs e)
+    {
+      var settingsPage = new SettingsPage();
+
+      Navigation.PushAsync(settingsPage, true);
+    }
+
+    private void StartGame(object sender, EventArgs e)
 		{
-			//var scorePage = new MainPage();
-			//scorePage.BindingContext = new GameViewModel(selectedPlayers);
-
-			////var fsdfsv = Navigation.NavigationStack; pytanie czy nie dałoby się wyczyścić stacka
-			//Navigation.PushAsync(scorePage, true);
-
 			var gamePage = new GamePage();
 			gamePage.BindingContext = new GamePageModel(selectedPlayers);
 
@@ -186,8 +180,6 @@ namespace Fussball.Views
 
 			if (selectPlayersPage != null && selectPlayersPage.GetSelection().Count > 0)
 			{
-				//pickedPlayersLabel.Text = "";
-
 				selectedPlayers = selectPlayersPage.GetSelection();
 
         PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarPath);
@@ -210,8 +202,6 @@ namespace Fussball.Views
 			}
 			else
 			{
-				//reset avatars?
-
 				letsPlayButton.IsVisible = false;
 			}
 		}
