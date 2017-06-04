@@ -170,7 +170,7 @@ namespace Fussball.Views
 			if (selectPlayersPage == null)
 			{
 				selectPlayersPage = new SelectPlayersPage(players) { Title = "Wybór graczy" };
-			}
+      }
 
 			await Navigation.PushAsync(selectPlayersPage);
 		}

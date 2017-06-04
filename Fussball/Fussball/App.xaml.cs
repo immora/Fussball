@@ -1,9 +1,4 @@
 ﻿using Fussball.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,7 +14,7 @@ namespace Fussball
 			MainPage = new NavigationPage(new HomePage());
 		}
 
-		protected override void OnStart()
+    protected override void OnStart()
 		{
 			// Handle when your app starts
 		}

@@ -222,7 +222,6 @@ namespace Fussball.Views
       });
     }
 
-
     protected override void OnDisappearing()
     {
       base.OnDisappearing();

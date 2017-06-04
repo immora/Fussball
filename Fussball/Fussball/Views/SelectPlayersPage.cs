@@ -2,6 +2,7 @@
 using System.Linq;
 using Xamarin.Forms;
 using Fussball.Models;
+using Fussball.ViewModels;
 
 namespace Fussball.Views
 {
@@ -32,10 +33,24 @@ namespace Fussball.Views
 			var height = Application.Current.MainPage.Height;
 			mainList.RowHeight = (int)(height - 50)/ players.Count;
 
-			Content = mainList;
+      ToolbarItem addPlayerToolbarItem = new ToolbarItem();
+      addPlayerToolbarItem.Order = ToolbarItemOrder.Primary;
+      addPlayerToolbarItem.Icon = "addIcon.png";
+      addPlayerToolbarItem.Clicked += AddPlayerToolbarItem_Clicked;
+
+      ToolbarItems.Add(addPlayerToolbarItem);
+
+      Content = mainList;
 		}
 
-		public List<Player> GetSelection()
+    private void AddPlayerToolbarItem_Clicked(object sender, System.EventArgs e)
+    {
+      var newPlayerPage = new NewPlayerPage();
+
+      Navigation.PushAsync(newPlayerPage, true);
+    }
+
+    public List<Player> GetSelection()
 		{
 			var selectedItems = WrappedItems.Where(item => item.IsSelected).Select(wrappedItem => wrappedItem.Player).ToList();
 
@@ -54,5 +69,11 @@ namespace Fussball.Views
 				wi.IsSelected = false;
 			}
 		}
-	}
+
+    protected override void OnAppearing()
+    {
+      base.OnAppearing();
+      //listView.ItemsSource = App.Database.GetItems();
+    }
+  }
 }
