@@ -216,9 +216,9 @@ namespace Fussball.Views
     {
       base.OnAppearing();
 
-      MessagingCenter.Subscribe<GamePageViewModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", (sender, arg) =>
+      MessagingCenter.Subscribe<GamePageViewModel, MatchStatistics>(this, "MatchEndedStats", (sender, arg) =>
       {
-        DisplayAlert("Statystyki drużynowe", ToStringConverter.GetTeamStatistics(arg), "Ok, najs!");
+        DisplayAlert("Podsumowanie meczu", arg.ToString(), "Ok, najs!");
       });
     }
 
@@ -227,7 +227,7 @@ namespace Fussball.Views
     {
       base.OnDisappearing();
 
-      MessagingCenter.Unsubscribe<GamePageViewModel, List<TeamPlayerGoals>>(this, "MatchEndedStats");
+      MessagingCenter.Unsubscribe<GamePageViewModel, MatchStatistics>(this, "MatchEndedStats");
     }
   }
 }

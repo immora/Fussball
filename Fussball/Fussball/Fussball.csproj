@@ -61,7 +61,6 @@
     <Compile Include="Views\SelectPlayersPage.cs" />
     <Compile Include="Utils\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Utils\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Utils\ToStringConverter.cs" />
     <Compile Include="Utils\MyTimer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -71,13 +71,15 @@ namespace Fussball.ViewModels
       PlaySound();
       MatchNumber++;
       MatchEnded = true;
-      
-      List<TeamPlayerGoals> stats = CreateStatisticsForEachPlayer();
 
-      MessagingCenter.Send<GamePageViewModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", stats);
+      MatchStatistics stats = matchService.CalculateStatistics(TeamHomePlayers, TeamOneScore, TeamTwoScore);
 
-      if (MatchNumber >= goalLimit)
+      MessagingCenter.Send<GamePageViewModel, MatchStatistics>(this, "MatchEndedStats", stats);
+
+      if (MatchNumber >= maxMatchCount)
       {
+        //jak ostatni mecz to statystyki dla całej gry
+
         return;
       }
 
@@ -87,25 +89,6 @@ namespace Fussball.ViewModels
       TeamAwayPlayers = matches[MatchNumber].TeamAway;
 
       matchService.PlayersGoals.Clear();
-    }
-
-    private List<TeamPlayerGoals> CreateStatisticsForEachPlayer()
-    {
-      List<TeamPlayerGoals> result = new List<TeamPlayerGoals>();
-
-      foreach(var goalsForPlayer in matchService.PlayersGoals)
-      {
-        TeamPlayerGoals stats = new TeamPlayerGoals
-        {
-          Player = goalsForPlayer.Key,
-          Goals = goalsForPlayer.Value,
-          Team = TeamHomePlayers.Contains(goalsForPlayer.Key) ? "Team home" : "Team away"
-        };
-
-        result.Add(stats);
-      }
-
-      return result;
     }
 
     private void StartOrPauseGame()
@@ -152,12 +135,25 @@ namespace Fussball.ViewModels
     {
       TeamOneScore += 1;
       matchService.AddGoal(player);
+      CheckGoalLimit(TeamOneScore);
     }
 
     private void GoalTeamTwoTap(Player player = null)
     {
       TeamTwoScore += 1;
       matchService.AddGoal(player);
+      CheckGoalLimit(TeamTwoScore);
+    }
+
+    private void CheckGoalLimit(int currentScore)
+    {
+      if (goalLimit == 0)
+        return;
+
+      if (currentScore == goalLimit)
+      {
+        OnMatchEnded();
+      }
     }
 
     private void PlaySound()

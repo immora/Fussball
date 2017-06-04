@@ -24,5 +24,27 @@ namespace Fussball.Services
 
 			PlayersGoals[player] = ++goals;
 		}
+
+    public MatchStatistics CalculateStatistics(List<Player> teamHomePlayers, int teamHomeScore, int teamAwayScore)
+    {
+      MatchStatistics result = new MatchStatistics();
+
+      foreach (var goalsForPlayer in PlayersGoals)
+      {
+        TeamPlayerGoals stats = new TeamPlayerGoals
+        {
+          Player = goalsForPlayer.Key,
+          Goals = goalsForPlayer.Value,
+          Team = teamHomePlayers.Contains(goalsForPlayer.Key) ? "Team home" : "Team away"
+        };
+
+        result.GoalsForEachTeamPlayer.Add(stats);
+      }
+
+      result.TeamHomeScore = teamHomeScore;
+      result.TeamAwayScore = teamAwayScore;
+
+      return result;
+    }
 	}
 }

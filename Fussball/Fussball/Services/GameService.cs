@@ -46,5 +46,10 @@ namespace Fussball.Services
 
 			return Matches;
 		}
+
+    public void CalculateStatistics()
+    {
+
+    }
 	}
 }
