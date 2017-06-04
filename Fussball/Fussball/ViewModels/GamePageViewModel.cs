@@ -1,4 +1,5 @@
 ﻿using Acr.Notifications;
+using Fussball.Helpers;
 using Fussball.Interface;
 using Fussball.Models;
 using Fussball.Services;
@@ -14,7 +15,7 @@ using Xamarin.Forms;
 namespace Fussball.ViewModels
 {
 
-  public class GamePageModel : INotifyPropertyChanged
+  public class GamePageViewModel : INotifyPropertyChanged
   {
     public ICommand IncreaseGoalCountCommand { get; }
     public ICommand GoalTeamOneTapCommand { get; }
@@ -22,13 +23,15 @@ namespace Fussball.ViewModels
     public ICommand StartOrPauseGameCommand { get; set; }
     public ICommand ResetGameCommand { get; set; }
 
-    public const int MatchDurationInSeconds = 60;
+    public readonly int MatchDurationInSeconds = 60;
 
     MatchService matchService;
     MyTimer timer;
     List<Match> matches;
+    int maxMatchCount;
+    int goalLimit;
 
-    public GamePageModel(List<Player> players)
+    public GamePageViewModel(List<Player> players)
     {
       GameService gameService = new GameService();
       matchService = new MatchService();
@@ -50,6 +53,11 @@ namespace Fussball.ViewModels
 
       MatchStatusText = $"Start (mecz {MatchNumber + 1})";
 
+      MatchDurationInSeconds = Settings.MatchTime * 60;
+
+      maxMatchCount = Settings.MatchCount;
+      goalLimit = Settings.GoalLimit;
+
       TimeLeft = TimeSpan.FromMinutes(MatchDurationInSeconds / 60).ToString(@"mm\:ss");
 
       timer = new MyTimer(TimeSpan.FromSeconds(1),
@@ -63,16 +71,17 @@ namespace Fussball.ViewModels
       PlaySound();
       MatchNumber++;
       MatchEnded = true;
-      ResetGame();
-
+      
       List<TeamPlayerGoals> stats = CreateStatisticsForEachPlayer();
 
-      MessagingCenter.Send<GamePageModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", stats);
+      MessagingCenter.Send<GamePageViewModel, List<TeamPlayerGoals>>(this, "MatchEndedStats", stats);
 
-      if (MatchNumber >= 3)
+      if (MatchNumber >= goalLimit)
       {
         return;
       }
+
+      ResetGame();
 
       TeamHomePlayers = matches[MatchNumber].TeamHome;
       TeamAwayPlayers = matches[MatchNumber].TeamAway;

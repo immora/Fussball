@@ -141,6 +141,7 @@ namespace Fussball.Views
     private void ShowSettingsPage(object sender, EventArgs e)
     {
       var settingsPage = new SettingsPage();
+      settingsPage.BindingContext = new SettingsPageViewModel();
 
       Navigation.PushAsync(settingsPage, true);
     }
@@ -148,7 +149,7 @@ namespace Fussball.Views
     private void StartGame(object sender, EventArgs e)
 		{
 			var gamePage = new GamePage();
-			gamePage.BindingContext = new GamePageModel(selectedPlayers);
+			gamePage.BindingContext = new GamePageViewModel(selectedPlayers);
 
 			Navigation.PushAsync(gamePage, true);
 		}
