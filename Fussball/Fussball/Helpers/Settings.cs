@@ -12,10 +12,7 @@ namespace Fussball.Helpers
   {
     private static ISettings AppSettings
     {
-      get
-      {
-        return CrossSettings.Current;
-      }
+      get => CrossSettings.Current;
     }
 
     #region Setting Constants
@@ -30,6 +27,8 @@ namespace Fussball.Helpers
     private static readonly int GoalLimitDefault = 0;
 
     #endregion
+
+    #region Setting Properties
 
     public static int MatchCount
     {
@@ -48,5 +47,7 @@ namespace Fussball.Helpers
       get => AppSettings.GetValueOrDefault<int>(GoalLimitKey, GoalLimitDefault);
       set => AppSettings.AddOrUpdateValue<int>(GoalLimitKey, value);
     }
+
+    #endregion
   }
 }

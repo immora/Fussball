@@ -138,7 +138,7 @@ namespace Fussball.Views
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-      teamHomePlayer1.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[0].AvatarPath"));
+      teamHomePlayer1.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[0].AvatarFileName"));
       tapGoalForTeamHomePlayerOne.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamHomePlayers[0]"));
       teamHomePlayer1.GestureRecognizers.Add(tapGoalForTeamHomePlayerOne);
 
@@ -151,7 +151,7 @@ namespace Fussball.Views
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-      teamHomePlayer2.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[1].AvatarPath"));
+      teamHomePlayer2.SetBinding(Image.SourceProperty, new Binding("TeamHomePlayers[1].AvatarFileName"));
       tapGoalForTeamHomePlayerTwo.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamHomePlayers[1]"));
       teamHomePlayer2.GestureRecognizers.Add(tapGoalForTeamHomePlayerTwo);
 
@@ -163,7 +163,7 @@ namespace Fussball.Views
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-      teamAwayPlayer1.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[0].AvatarPath"));
+      teamAwayPlayer1.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[0].AvatarFileName"));
       tapGoalForTeamAwayPlayerOne.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamAwayPlayers[0]"));
       teamAwayPlayer1.GestureRecognizers.Add(tapGoalForTeamAwayPlayerOne);
 
@@ -175,7 +175,7 @@ namespace Fussball.Views
         BorderColor = Color.Accent,
         BorderThickness = 3
       };
-      teamAwayPlayer2.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[1].AvatarPath"));
+      teamAwayPlayer2.SetBinding(Image.SourceProperty, new Binding("TeamAwayPlayers[1].AvatarFileName"));
       tapGoalForTeamAwayPlayerTwo.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("TeamAwayPlayers[1]"));
       teamAwayPlayer2.GestureRecognizers.Add(tapGoalForTeamAwayPlayerTwo);
 

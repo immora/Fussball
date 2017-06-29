@@ -183,19 +183,19 @@ namespace Fussball.Views
 			{
 				selectedPlayers = selectPlayersPage.GetSelection();
 
-        PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarPath);
+        PlayerImg1.Source = ImageSource.FromFile(selectedPlayers[0].AvatarFileName);
         PlayerImg1.BorderColor = Color.White;
         PlayerImg1.BorderThickness = 3;
 
-				PlayerImg2.Source = ImageSource.FromFile(selectedPlayers[1].AvatarPath);
+				PlayerImg2.Source = ImageSource.FromFile(selectedPlayers[1].AvatarFileName);
         PlayerImg2.BorderColor = Color.White;
         PlayerImg2.BorderThickness = 3;
 
-        PlayerImg3.Source = ImageSource.FromFile(selectedPlayers[2].AvatarPath);
+        PlayerImg3.Source = ImageSource.FromFile(selectedPlayers[2].AvatarFileName);
         PlayerImg3.BorderColor = Color.White;
         PlayerImg3.BorderThickness = 3;
 
-        PlayerImg4.Source = ImageSource.FromFile(selectedPlayers[3].AvatarPath);
+        PlayerImg4.Source = ImageSource.FromFile(selectedPlayers[3].AvatarFileName);
         PlayerImg4.BorderColor = Color.White;
         PlayerImg4.BorderThickness = 3;
 

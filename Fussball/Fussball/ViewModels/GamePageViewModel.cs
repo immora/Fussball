@@ -76,14 +76,14 @@ namespace Fussball.ViewModels
 
       MessagingCenter.Send<GamePageViewModel, MatchStatistics>(this, "MatchEndedStats", stats);
 
+      ResetGame();
+
       if (MatchNumber >= maxMatchCount)
       {
         //jak ostatni mecz to statystyki dla całej gry
 
         return;
       }
-
-      ResetGame();
 
       TeamHomePlayers = matches[MatchNumber].TeamHome;
       TeamAwayPlayers = matches[MatchNumber].TeamAway;

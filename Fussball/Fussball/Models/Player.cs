@@ -10,12 +10,12 @@ namespace Fussball.Models
 
     public string DisplayName { get; set; }
 
-    public string AvatarPath
+    public string AvatarFileName
     {
       get => DisplayName.ToLower().ReplacePolishSigns() + ".jpg";
     }
 
-    public string ImagePath { get; set; } //forsqllite
+    public string AvatarPath { get; set; } //forsqllite
 
     public override string ToString()
     {

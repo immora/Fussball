@@ -12,7 +12,7 @@ namespace Fussball.Views
 			public WrappedPlayerSelectionTemplate() : base()
 			{
         CircleImage image = new CircleImage();
-				image.SetBinding(Image.SourceProperty, new Binding("Player.AvatarPath"));
+				image.SetBinding(Image.SourceProperty, new Binding("Player.AvatarFileName"));
         image.Aspect = Aspect.AspectFit;
         image.BorderColor = Color.White;
         image.BorderThickness = 3;
